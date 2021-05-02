@@ -1,0 +1,22 @@
+Package: pricing
+Type: Package
+Title: Option pricing engines for (jump)-diffusions
+Version: 0.1.0
+Author: S. Hill
+Maintainer: S. Hill <52792611+shill1729@users.noreply.github.com>
+Description: European and American option pricing, hedging, and calibration.
+    Models provided are Black-Scholes, Brigo-Mercurio Mixture, and Merton's
+    jump diffusion. Monte-Carlo and finite-difference solvers are available
+    for European options while just the latter is provided to price American 
+    options.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+LinkingTo: 
+    Rcpp
+Imports:
+    bizdays,
+    findistr,
+    Rcpp,
+    trader
