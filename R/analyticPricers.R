@@ -11,11 +11,12 @@
 #' Merton's jump diffusion, and a log-normal mixture.}
 #' @details {The argument \code{model} must be a named list of
 #' \itemize{
-#' \item \code{name} either "gbm", "mixture", or "merton"
+#' \item \code{name} either "gbm", "gcpp", "mixture", or "merton"
 #' \item \code{param} the parameters defining the above model.}
 #' For "gbm" and "merton", \code{param} should be a vector of the risk-free rate,
 #' volatility, and the same with the mean rate of jumps and jump parameters. For
-#' "mixture" it must be a matrix of probabilities, risk-neutral rate, and volatilities.}
+#' "mixture" it must be a matrix of probabilities, risk-neutral rate, and volatilities. For
+#' "gcpp", it should be a vector of the risk-free rate, jump rate, jump size, and compensator size.}
 #' @return numeric
 analyticPricer <- function(strike, expiry, spot, model, type = "call")
 {
@@ -73,6 +74,24 @@ analyticPricer <- function(strike, expiry, spot, model, type = "call")
       condPrices[i] <- analyticPricer(strike, expiry, spot, condModel, type)
     }
     price <- sum(condPrices*pp)
+  } else if(model$name == "gcpp")
+  {
+    rate <- model$param[1]
+    lambda <- model$param[2]
+    a <- model$param[3]
+    b <- model$param[4]
+    lambdaStar <- (rate+b)/(exp(a)-1)
+    rn <- findistr::pgcpp(strike, expiry, spot, a, b, lambdaStar)
+    fr <- findistr::pgcpp(strike, expiry, spot, a, b, exp(a)*lambdaStar)
+    if(type == "put")
+    {
+
+      price <- strike*exp(-rate*expiry)*rn-spot*fr
+
+    } else if(type == "call")
+    {
+      price <- spot*(1-fr)-strike*exp(-rate*expiry)*(1-rn)
+    }
   }
   return(price)
 }

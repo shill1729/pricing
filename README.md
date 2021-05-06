@@ -11,15 +11,13 @@ The goal of pricing is to ...
 You can install the released version of pricing from 
 
 ``` r
-# installation...
+# TODO
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
 library(pricing)
-## basic example code
+## TODO
 ```
 

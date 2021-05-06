@@ -2,5 +2,6 @@
 
 export(pricer_analytic)
 export(pricer_mc)
+export(pricer_pde)
 importFrom(Rcpp,sourceCpp)
 useDynLib(pricing, .registration = TRUE)

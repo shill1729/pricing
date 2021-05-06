@@ -5,20 +5,66 @@
 
 using namespace Rcpp;
 
-// timesTwo
-NumericVector timesTwo(NumericVector x);
-RcppExport SEXP _pricing_timesTwo(SEXP xSEXP) {
+// blackScholesPDE
+Rcpp::NumericMatrix blackScholesPDE(double strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american, double B);
+RcppExport SEXP _pricing_blackScholesPDE(SEXP strikeSEXP, SEXP maturitySEXP, SEXP spotSEXP, SEXP typeSEXP, SEXP paramSEXP, SEXP NSEXP, SEXP MSEXP, SEXP americanSEXP, SEXP BSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(timesTwo(x));
+    Rcpp::traits::input_parameter< double >::type strike(strikeSEXP);
+    Rcpp::traits::input_parameter< double >::type maturity(maturitySEXP);
+    Rcpp::traits::input_parameter< double >::type spot(spotSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< bool >::type american(americanSEXP);
+    Rcpp::traits::input_parameter< double >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(blackScholesPDE(strike, maturity, spot, type, param, N, M, american, B));
+    return rcpp_result_gen;
+END_RCPP
+}
+// blackScholesPDE_chain
+Rcpp::NumericVector blackScholesPDE_chain(Rcpp::NumericVector strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american);
+RcppExport SEXP _pricing_blackScholesPDE_chain(SEXP strikeSEXP, SEXP maturitySEXP, SEXP spotSEXP, SEXP typeSEXP, SEXP paramSEXP, SEXP NSEXP, SEXP MSEXP, SEXP americanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type strike(strikeSEXP);
+    Rcpp::traits::input_parameter< double >::type maturity(maturitySEXP);
+    Rcpp::traits::input_parameter< double >::type spot(spotSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< bool >::type american(americanSEXP);
+    rcpp_result_gen = Rcpp::wrap(blackScholesPDE_chain(strike, maturity, spot, type, param, N, M, american));
+    return rcpp_result_gen;
+END_RCPP
+}
+// blackScholesPDE_surface
+Rcpp::NumericMatrix blackScholesPDE_surface(Rcpp::NumericVector strike, Rcpp::NumericVector maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american);
+RcppExport SEXP _pricing_blackScholesPDE_surface(SEXP strikeSEXP, SEXP maturitySEXP, SEXP spotSEXP, SEXP typeSEXP, SEXP paramSEXP, SEXP NSEXP, SEXP MSEXP, SEXP americanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type strike(strikeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type maturity(maturitySEXP);
+    Rcpp::traits::input_parameter< double >::type spot(spotSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< bool >::type american(americanSEXP);
+    rcpp_result_gen = Rcpp::wrap(blackScholesPDE_surface(strike, maturity, spot, type, param, N, M, american));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pricing_timesTwo", (DL_FUNC) &_pricing_timesTwo, 1},
+    {"_pricing_blackScholesPDE", (DL_FUNC) &_pricing_blackScholesPDE, 9},
+    {"_pricing_blackScholesPDE_chain", (DL_FUNC) &_pricing_blackScholesPDE_chain, 8},
+    {"_pricing_blackScholesPDE_surface", (DL_FUNC) &_pricing_blackScholesPDE_surface, 8},
     {NULL, NULL, 0}
 };
 
