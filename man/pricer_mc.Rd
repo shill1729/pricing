@@ -33,5 +33,6 @@ Merton's jump diffusion, and a log-normal mixture.}
 \item \code{param} the parameters defining the above model.}
 For "gbm" and "merton", \code{param} should be a vector of the risk-free rate,
 volatility, and the same with the mean rate of jumps and jump parameters. For
-"mixture" it must be a matrix of probabilities, risk-neutral rate, and volatilities.}
+"mixture" it must be a matrix of probabilities, risk-neutral rate, and volatilities. For
+"gcpp", it should be a vector of the risk-free rate, jump rate, jump size, and compensator size.}
 }

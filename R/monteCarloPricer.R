@@ -29,7 +29,8 @@ monteCarlo <- function(maturity, rate, variates)
 #' \item \code{param} the parameters defining the above model.}
 #' For "gbm" and "merton", \code{param} should be a vector of the risk-free rate,
 #' volatility, and the same with the mean rate of jumps and jump parameters. For
-#' "mixture" it must be a matrix of probabilities, risk-neutral rate, and volatilities.}
+#' "mixture" it must be a matrix of probabilities, risk-neutral rate, and volatilities. For
+#' "gcpp", it should be a vector of the risk-free rate, jump rate, jump size, and compensator size.}
 #' @return data.frame
 #' @export pricer_mc
 pricer_mc <- function(strikes, expiries, spot, model, type = "call", n = 1000)
@@ -65,6 +66,9 @@ pricer_mc <- function(strikes, expiries, spot, model, type = "call", n = 1000)
       # rgmm returns the log-variates
       x <- findistr::rgmm(n, model$param[1, ], (rate-0.5*model$param[3, ]^2)*expiries[j], model$param[3, ]*sqrt(expiries[j]))
       s <- spot*exp(x)
+    } else if(model$name == "gcpp")
+    {
+      s <- findistr::rgcpp(n, expiries[j], spot, model$param[3], model$param[4], model$param[2])
     }
     ####
     for(i in 1:length(strikes))
