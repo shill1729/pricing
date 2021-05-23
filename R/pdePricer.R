@@ -39,3 +39,26 @@ pricer_pde <- function(strikes, expiries, spot, model, type = "call", N = 100, M
   prices <- as.data.frame(prices)
   return(prices)
 }
+
+
+#' Compute Greeks under BS dynamics
+#'
+#' @param strike the strike price
+#' @param expiry the time until maturity
+#' @param spot the spot price
+#' @param v volatility
+#' @param r risk-free rate
+#' @param type put or call
+#' @param N time resolution
+#' @param M space resolution
+#' @param american boolean for American or European options
+#'
+#' @description {The basic Greeks under Black-Scholes.}
+#' @return vector
+#' @export bs_greeks
+bs_greeks <- function(strike, expiry, spot, v, r, type = "call" , N = 100, M = 100, american = TRUE)
+{
+
+  z <- blackScholesGreeks(strike, expiry, spot, type, c(r, v), N, M, american)
+  return(z)
+}

@@ -75,6 +75,7 @@ Rcpp::NumericMatrix blackScholesPDE(double strike, double maturity, double spot,
   return u;
 }
 
+
 // [[Rcpp::export]]
 Rcpp::NumericVector blackScholesPDE_chain(Rcpp::NumericVector strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american)
 {
@@ -106,4 +107,53 @@ Rcpp::NumericMatrix blackScholesPDE_surface(Rcpp::NumericVector strike, Rcpp::Nu
   return prices;
 }
 
+Rcpp::NumericVector computeGreeks(double strike, double maturity, double spot, Rcpp::NumericMatrix u, int N, int M, bool american, double B)
+{
+
+  Rcpp::NumericVector greeks(5);
+  double h = 2.0*B/M;
+  double k = maturity/N;
+  int i = M / 2;
+  double Fee = u(N, i);
+  double Delta = (u(N, i + 1) - u(N, i - 1)) / (2 * h);
+  double Gamma = (u(N, i + 1) - 2 * u(N, i) + u(N, i - 1)) / (h*h);
+  double Theta = (u(N - 1, i) - u(N, i)) / k;
+  Theta = Theta / 360.0;
+  greeks[0] = strike;
+  greeks[1] = Fee;
+  greeks[2] = Delta / spot;
+  greeks[3] = (Gamma - Delta) / (spot*spot);
+  greeks[4] = Theta;
+  return greeks;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector blackScholesGreeks_chain(Rcpp::NumericVector strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american)
+{
+
+  int n = strike.size();
+  Rcpp::NumericMatrix greeks(n, 5);
+  double B = 0.5*param[1]*M*std::sqrt(3*maturity/N);
+  Grid grid(B, maturity, N, M);
+  for(int i = 0; i < n; i++)
+  {
+    Payoff payoff(strike[i], type);
+    Rcpp::NumericMatrix u = blackScholesPDE(spot, param, payoff, grid, american);
+    Rcpp::NumericVector v = computeGreeks(strike[i], maturity, spot, u, N, M, american, B);
+    greeks(i, Rcpp::_) = v;
+  }
+  return greeks;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector blackScholesGreeks(double strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american)
+{
+  Rcpp::NumericVector greeks(5);
+  double B = 0.5*param[1]*M*std::sqrt(3*maturity/N);
+  Grid grid(B, maturity, N, M);
+  Payoff payoff(strike, type);
+  Rcpp::NumericMatrix u = blackScholesPDE(spot, param, payoff, grid, american);
+  greeks = computeGreeks(strike, maturity, spot, u, N, M, american, B);
+  return greeks;
+}
 

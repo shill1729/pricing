@@ -60,11 +60,49 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// blackScholesGreeks_chain
+Rcpp::NumericVector blackScholesGreeks_chain(Rcpp::NumericVector strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american);
+RcppExport SEXP _pricing_blackScholesGreeks_chain(SEXP strikeSEXP, SEXP maturitySEXP, SEXP spotSEXP, SEXP typeSEXP, SEXP paramSEXP, SEXP NSEXP, SEXP MSEXP, SEXP americanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type strike(strikeSEXP);
+    Rcpp::traits::input_parameter< double >::type maturity(maturitySEXP);
+    Rcpp::traits::input_parameter< double >::type spot(spotSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< bool >::type american(americanSEXP);
+    rcpp_result_gen = Rcpp::wrap(blackScholesGreeks_chain(strike, maturity, spot, type, param, N, M, american));
+    return rcpp_result_gen;
+END_RCPP
+}
+// blackScholesGreeks
+Rcpp::NumericVector blackScholesGreeks(double strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american);
+RcppExport SEXP _pricing_blackScholesGreeks(SEXP strikeSEXP, SEXP maturitySEXP, SEXP spotSEXP, SEXP typeSEXP, SEXP paramSEXP, SEXP NSEXP, SEXP MSEXP, SEXP americanSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type strike(strikeSEXP);
+    Rcpp::traits::input_parameter< double >::type maturity(maturitySEXP);
+    Rcpp::traits::input_parameter< double >::type spot(spotSEXP);
+    Rcpp::traits::input_parameter< std::string >::type type(typeSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type param(paramSEXP);
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    Rcpp::traits::input_parameter< bool >::type american(americanSEXP);
+    rcpp_result_gen = Rcpp::wrap(blackScholesGreeks(strike, maturity, spot, type, param, N, M, american));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_pricing_blackScholesPDE", (DL_FUNC) &_pricing_blackScholesPDE, 9},
     {"_pricing_blackScholesPDE_chain", (DL_FUNC) &_pricing_blackScholesPDE_chain, 8},
     {"_pricing_blackScholesPDE_surface", (DL_FUNC) &_pricing_blackScholesPDE_surface, 8},
+    {"_pricing_blackScholesGreeks_chain", (DL_FUNC) &_pricing_blackScholesGreeks_chain, 8},
+    {"_pricing_blackScholesGreeks", (DL_FUNC) &_pricing_blackScholesGreeks, 8},
     {NULL, NULL, 0}
 };
 

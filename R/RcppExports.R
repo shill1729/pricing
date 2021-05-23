@@ -13,3 +13,11 @@ blackScholesPDE_surface <- function(strike, maturity, spot, type, param, N, M, a
     .Call(`_pricing_blackScholesPDE_surface`, strike, maturity, spot, type, param, N, M, american)
 }
 
+blackScholesGreeks_chain <- function(strike, maturity, spot, type, param, N, M, american) {
+    .Call(`_pricing_blackScholesGreeks_chain`, strike, maturity, spot, type, param, N, M, american)
+}
+
+blackScholesGreeks <- function(strike, maturity, spot, type, param, N, M, american) {
+    .Call(`_pricing_blackScholesGreeks`, strike, maturity, spot, type, param, N, M, american)
+}
+
