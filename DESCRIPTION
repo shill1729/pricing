@@ -18,5 +18,4 @@ LinkingTo:
 Imports:
     bizdays,
     findistr,
-    Rcpp,
-    trader
+    Rcpp

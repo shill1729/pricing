@@ -30,9 +30,13 @@ pricer_pde <- function(strikes, expiries, spot, model, type = "call", N = 100, M
     stop("Other models not implemented yet for the PDE solver")
   }
 
-  if(!bizdays::has.calendars("trading"))
+  if(!bizdays::has_calendars("trading"))
   {
-    trader::date_yte(Sys.Date()+5)
+    bizdays::create.calendar(name = "trading",
+                             weekdays = c("saturday", "sunday"),
+                             financial = TRUE
+    )
+    bizdays::bizdays.options$set(default.calendar = "trading")
   }
   prices <- cbind(strikes, prices)
   colnames(prices) <- c("strike", as.character(bizdays::offset(Sys.Date(), expiries*252, cal = "trading")))

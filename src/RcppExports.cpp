@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // blackScholesPDE
 Rcpp::NumericMatrix blackScholesPDE(double strike, double maturity, double spot, std::string type, Rcpp::NumericVector param, int N, int M, bool american, double B);
 RcppExport SEXP _pricing_blackScholesPDE(SEXP strikeSEXP, SEXP maturitySEXP, SEXP spotSEXP, SEXP typeSEXP, SEXP paramSEXP, SEXP NSEXP, SEXP MSEXP, SEXP americanSEXP, SEXP BSEXP) {

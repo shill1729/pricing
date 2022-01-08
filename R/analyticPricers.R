@@ -125,9 +125,13 @@ pricer_analytic <- function(strikes, expiries, spot, model, type = "call")
       prices[i, j] <- analyticPricer(strikes[i], expiries[j], spot, model, type)
     }
   }
-  if(!bizdays::has.calendars("trading"))
+  if(!bizdays::has_calendars("trading"))
   {
-    trader::date_yte(Sys.Date()+5)
+    bizdays::create.calendar(name = "trading",
+                             weekdays = c("saturday", "sunday"),
+                             financial = TRUE
+    )
+    bizdays::bizdays.options$set(default.calendar = "trading")
   }
   prices <- cbind(strikes, prices)
   colnames(prices) <- c("strike", as.character(bizdays::offset(Sys.Date(), expiries*252, cal = "trading")))
